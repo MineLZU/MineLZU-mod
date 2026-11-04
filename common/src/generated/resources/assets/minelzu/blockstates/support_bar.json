@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "minelzu:block/misc/support_bar",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "minelzu:block/misc/support_bar",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "minelzu:block/misc/support_bar",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "minelzu:block/misc/support_bar"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+gradle.projectsLoaded {
+    rootProject.allprojects {
+        repositories {
+            mavenCentral()
+        }
+    }
+}

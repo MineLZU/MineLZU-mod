@@ -1,0 +1,88 @@
+plugins {
+    id 'dev.architectury.loom-no-remap'
+    id 'com.gradleup.shadow'
+}
+
+configurations {    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+dependencies {
+    implementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+    implementation "dev.architectury:architectury-fabric:${rootProject.architectury_api_version}"
+    implementation "net.fabricmc:fabric-language-kotlin:${rootProject.fabric_language_kotlin_version}"
+
+    common(project(path: ':common')) { transitive = false }
+    shadowBundle(project(path: ':common')) { transitive = false }
+}
+
+processResources {
+    inputs.properties(
+        version                     : project.version,
+        mod_id                      : rootProject.mod_id,
+        mod_name                    : rootProject.mod_name,
+        mod_license                 : rootProject.mod_license,
+        minecraft_version_range     : ">=" + rootProject.minecraft_version,
+        fabric_loader_version       : rootProject.fabric_loader_version,
+        architectury_api_version    : rootProject.architectury_api_version,
+        fabric_language_kotlin_version: rootProject.fabric_language_kotlin_version,
+    )
+
+    filesMatching('fabric.mod.json') {
+        expand inputs.properties
+    }
+
+    from(rootProject.file('common/src/main/resources/minelzu.accesswidener'))
+    from(rootProject.file('common/src/main/resources')) {
+        include 'assets/**'
+    }
+    from(rootProject.file('common/src/generated/resources')) {
+        include 'assets/**'
+        include 'data/**'
+    }
+}
+
+jar {
+    archiveClassifier = 'dev'
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = null
+}
+
+assemble.dependsOn shadowJar
+
+configurations {
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(tasks.shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(tasks.shadowJar)
+    }
+}
+
+loom {
+    accessWidenerPath = file('../common/src/main/resources/minelzu.accesswidener')
+
+    mods {
+        main {
+            sourceSet 'main', ':common'
+        }
+    }
+}
+
+
+

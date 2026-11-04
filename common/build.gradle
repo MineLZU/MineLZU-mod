@@ -1,0 +1,22 @@
+plugins {
+    id 'dev.architectury.loom-no-remap'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/generated/resources'
+            exclude '.cache/**'
+        }
+    }
+}
+
+dependencies {
+    implementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    implementation "dev.architectury:architectury:${rootProject.architectury_api_version}"
+}
+
+loom {
+    accessWidenerPath = file('src/main/resources/minelzu.accesswidener')
+}
+

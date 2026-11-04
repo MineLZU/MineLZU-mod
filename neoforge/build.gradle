@@ -1,0 +1,111 @@
+plugins {
+    id 'dev.architectury.loom-no-remap'
+    id 'com.gradleup.shadow'
+}
+
+repositories {
+    maven {
+        name = 'NeoForged'
+        url = 'https://maven.neoforged.net/releases'
+    }
+    maven {
+        name = 'Kotlin for Forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+}
+
+
+loom {
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+        data {
+            clientData()
+            programArgs '--mod', rootProject.mod_id, '--all'
+            programArgs '--output', rootProject.file('common/src/generated/resources').absolutePath
+            programArgs '--existing', rootProject.file('common/src/main/resources').absolutePath
+        }
+    }
+
+    mods {
+        main {
+            sourceSet 'main', ':common'
+        }
+    }
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:${rootProject.neo_version}"
+    implementation "dev.architectury:architectury-neoforge:${rootProject.architectury_api_version}"
+    implementation "thedarkcolour:kotlinforforge-neoforge:${rootProject.kff_version}"
+
+    common(project(path: ':common')) { transitive = false }
+    shadowBundle(project(path: ':common')) { transitive = false }
+}
+
+processResources {
+    inputs.properties(
+        version                 : project.version,
+        mod_version             : project.version,
+        mod_id                  : rootProject.mod_id,
+        mod_name                : rootProject.mod_name,
+        mod_license             : rootProject.mod_license,
+        minecraft_version       : rootProject.minecraft_version,
+        minecraft_version_range : rootProject.minecraft_version_range,
+        neo_version             : rootProject.neo_version,
+        neo_version_range       : rootProject.neo_version_range,
+        kff_version_range       : rootProject.kff_version_range,
+        architectury_version    : rootProject.architectury_api_version,
+    )
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand inputs.properties
+    }
+}
+
+jar {
+    archiveClassifier = 'dev'
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = null
+}
+
+assemble.dependsOn shadowJar
+
+configurations {
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(tasks.shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(tasks.shadowJar)
+    }
+}
+
+
+
+
+
+
+
+

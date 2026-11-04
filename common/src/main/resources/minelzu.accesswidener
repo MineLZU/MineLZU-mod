@@ -1,0 +1,11 @@
+accessWidener	v2	official
+
+accessible	field	net/minecraft/client/data/models/BlockModelGenerators	blockStateOutput	Ljava/util/function/Consumer;
+accessible	field	net/minecraft/client/data/models/BlockModelGenerators	itemModelOutput	Lnet/minecraft/client/data/models/ItemModelOutput;
+accessible	field	net/minecraft/client/data/models/BlockModelGenerators	modelOutput	Ljava/util/function/BiConsumer;
+accessible	field	net/minecraft/client/data/models/BlockModelGenerators	ROTATION_HORIZONTAL_FACING	Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
+accessible	method	net/minecraft/client/data/models/BlockModelGenerators	plainVariant	(Lnet/minecraft/resources/Identifier;)Lnet/minecraft/client/data/models/MultiVariant;
+accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createSimpleBlock	(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/client/data/models/MultiVariant;)Lnet/minecraft/client/data/models/blockstates/MultiVariantGenerator;
+accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createSlab	(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/client/data/models/MultiVariant;Lnet/minecraft/client/data/models/MultiVariant;Lnet/minecraft/client/data/models/MultiVariant;)Lnet/minecraft/client/data/models/blockstates/BlockModelDefinitionGenerator;
+accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createStairs	(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/client/data/models/MultiVariant;Lnet/minecraft/client/data/models/MultiVariant;Lnet/minecraft/client/data/models/MultiVariant;)Lnet/minecraft/client/data/models/blockstates/BlockModelDefinitionGenerator;
+
